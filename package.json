@@ -1,0 +1,23 @@
+{
+  "name": "webapp-express",
+  "version": "1.0.0",
+  "description": "Api movies",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "node --watch app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Erremme/webapp-express.git"
+  },
+  "author": "Raffaele Molinaro",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Erremme/webapp-express/issues"
+  },
+  "homepage": "https://github.com/Erremme/webapp-express#readme",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
