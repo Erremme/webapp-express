@@ -50,6 +50,9 @@ const show = (req, res) =>{
             })
         }
 
+        movie.image =`${process.env.BE_URL}/movies/${movie.image}`
+
+
         const reviewsSql = `SELECT *
                         FROM reviews
                         WHERE movie_id= ?`
