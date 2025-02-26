@@ -16,7 +16,7 @@ app.use(cors({
 }))
 
 //Middlewares Globali
-app.use(express.static("public"));
+app.use(express.static('public'));
 
 //Middleware per parsing di req.body
 app.use(express.json())

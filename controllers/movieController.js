@@ -6,16 +6,21 @@ const index = (req, res) =>{
     const sql = "SELECT * FROM movies";
 
     //lanciare la query
-    connection.execute(sql, (err, result) => {
+    connection.execute(sql, (err, results) => {
         if(err){
             return res.status(500).json({
                 error:"Query Error",
                 message:"Database query failed"
-            })
+            });
         }
-        res.json(result);
-    })
-
+        const movies = results.map((movie) => {
+            movie.image =`${process.env.BE_URL}/movies/${movie.image}`
+            return movie;
+         })
+        
+         res.json(movies);
+        
+    })   
 
 }
 
