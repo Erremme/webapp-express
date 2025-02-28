@@ -33,12 +33,14 @@ const index = (req, res) =>{
 //Show
 const show = (req, res) =>{
     const {id} = req.params
-    const sql = `SELECT *  
-                FROM movies
-                WHERE id = ?`;
+    const movieSql = `SELECT movies.*,ROUND(AVG(reviews.vote)) AS avg_vote 
+    FROM movies
+    LEFT JOIN reviews ON movies.id = reviews.movie_id
+    WHERE movies.id = ?
+    GROUP BY movies.id `;
 
     //lanciare la query
-    connection.execute(sql, [id], (err, result) => {
+    connection.execute(movieSql, [id], (err, result) => {
         if(err){
             return res.status(500).json({
                 error:"Query Error",
