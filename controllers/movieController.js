@@ -81,7 +81,27 @@ const show = (req, res) =>{
 
 }
 
-//INDEX
+//STORE REVIEWS
+const storeReview = (req, res) => {
+    const {id} = req.params;
+    const {name , vote , text} = req.body;
+
+    const sql =`INSERT INTO reviews (movie_id, name, vote, text) VALUES (?, ?, ?, ?)`;
+
+    connection.execute(sql, [id , name, vote, text ], (err, result) => {
+        if(err){
+            return res.status(500).json({
+                error:"Query Error",
+                message:"Database query failed"
+                })
+        }
+
+        
+        res.status(201).json({id : result.insertId})
+    })
+}
+
+//DESTROY
 const destroy = (req, res) =>{}
 
-module.exports={index, show, destroy}
+module.exports={index, show, storeReview , destroy}
