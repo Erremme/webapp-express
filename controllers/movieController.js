@@ -81,6 +81,30 @@ const show = (req, res) =>{
 
 }
 
+//STORE MOVIE
+const store = (req , res) => {
+    const image = req.file.filename;
+   
+
+    const {title, director, genre , release_year , abstract} = req.body
+    const sql =`INSERT INTO movies (title, director, genre , release_year , abstract, image) 
+                 VALUES (?, ?, ?, ?, ?, ?)`;
+
+     connection.execute(sql, [title, director, genre , release_year , abstract, image], (err, result) => {
+        if(err){
+             return res.status(500).json({
+                 error:"Query Error",
+                message:"Database query failed"
+            })
+        }
+                        
+        res.status(201).json({id : result.insertId})
+    })
+     
+
+   
+}
+
 //STORE REVIEWS
 const storeReview = (req, res) => {
     const {id} = req.params;
@@ -104,4 +128,4 @@ const storeReview = (req, res) => {
 //DESTROY
 const destroy = (req, res) =>{}
 
-module.exports={index, show, storeReview , destroy}
+module.exports={index, show, storeReview , store, destroy}
