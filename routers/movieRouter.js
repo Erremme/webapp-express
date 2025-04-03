@@ -17,6 +17,10 @@ const storage = multer.diskStorage({
 //Index
 router.get("/", movieController.index);
 
+//RecentMovie
+
+router.get("/recents", movieController.recentMovie);
+
 //Show
 router.get("/:id", movieController.show);
 
