@@ -30,10 +30,37 @@ const index = (req, res) =>{
 
 }
 
+//RecentMovie
+
+const recentMovie = (req , res) =>{
+     
+    const recentSql = `SELECT *
+                    FROM movies
+                     where created_at > '2024-12-31 23:59:59'`
+
+ connection.execute(recentSql, (err, results) => {
+    if(err){
+        return res.status(500).json({
+            error:"Query Error",
+            message:"Database query failed"
+        });
+    }
+    const movies = results.map((movie) => {
+        movie.image =`${process.env.BE_URL}/movies/${movie.image}`
+        return movie;
+     })
+    
+     res.json(movies);
+    
+})  
+
+}
+
 //Show
 const show = (req, res) =>{
     const {id} = req.params
-    const movieSql = `SELECT movies.*,ROUND(AVG(reviews.vote)) AS avg_vote 
+    const movieSql = `
+    SELECT movies.*,ROUND(AVG(reviews.vote)) AS avg_vote 
     FROM movies
     LEFT JOIN reviews ON movies.id = reviews.movie_id
     WHERE movies.id = ?
@@ -74,10 +101,35 @@ const show = (req, res) =>{
         }
 
         movie.reviews= result
-        res.json(movie)
+        
     })
         
-    })   
+        const actors = `SELECT *
+                    FROM actors 
+                    JOIN movie_actors ON actors.id = movie_actors.actor_id
+                    WHERE movie_actors.movie_id = ?`
+
+                    connection.execute(actors, [id], (err, result) => {
+                        if(err){
+                            return res.status(500).json({
+                                error:"Query Error",
+                                message:"Database query failed"
+                                })
+                        }
+                         
+                        movie.actors= result
+            movie.actors =  movie.actors.map((item) => {
+                item.image = `${process.env.BE_URL}/movies/actors/${item.image}`;
+                return item
+            })
+
+        
+
+                        res.json(movie)
+                    })
+    }) 
+    
+   
 
 }
 
@@ -128,4 +180,4 @@ const storeReview = (req, res) => {
 //DESTROY
 const destroy = (req, res) =>{}
 
-module.exports={index, show, storeReview , store, destroy}
+module.exports={index, recentMovie, show, storeReview , store, destroy}
